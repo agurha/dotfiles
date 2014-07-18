@@ -19,8 +19,6 @@ Plugin 'chriskempson/base16-vim'
 Plugin 'kien/ctrlp.vim'
 Plugin 'gcmt/wildfire.vim'
 Plugin 'tpope/vim-surround'
-Plugin 'fatih/vim-go'
-Plugin 'Valloric/YouCompleteMe'
 Plugin 'tpope/vim-fugitive'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'godlygeek/tabular'
@@ -29,11 +27,13 @@ Plugin 'tpope/vim-commentary'
 Plugin 'tejr/vim-tmux'
 Plugin 'ervandew/supertab'
 Plugin 'plasticboy/vim-markdown'
-" Track the engine.
-Plugin 'SirVer/ultisnips'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'fatih/vim-go'
+Plugin 'Shougo/neosnippet'
+Plugin 'Shougo/neosnippet-snippets'
+Plugin 'bling/vim-airline'
+Plugin 'majutsushi/tagbar'
 
-" " Snippets are separated from the engine. Add this if you want them:
-Plugin 'honza/vim-snippets'
 call vundle#end()
 filetype plugin indent on
 
@@ -52,7 +52,7 @@ set t_Co=256
 " ==============
 
 let mapleader='\'
-set gfn=Menlo:h14
+set guifont=Monaco:h14
 set encoding=utf-8
 set number                      " Line numbers are good
 set backspace=indent,eol,start  " Allow backspace in insert mode
@@ -250,3 +250,14 @@ let g:tagbar_type_go = {
     \ 'ctagsbin'  : 'gotags',
     \ 'ctagsargs' : '-sort -silent'
     \ }
+
+" === Go settings
+"
+let g:go_play_open_browser = 0
+let g:go_fmt_failt_silently = 1
+let g:go_fmt_autosave = 0
+let g:go_fmt_command = "gofmt"
+
+let g:go_gocode_bin="~/workspace/gocode"
+
+let g:go_snippet_engine = "neosnippet"
