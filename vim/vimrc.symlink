@@ -8,17 +8,12 @@ set rtp+=~/.vim/bundle/vundle
 call vundle#rc()
 
 Bundle 'gmarik/vundle'
-Bundle 'L9'
-Bundle 'chriskempson/base16-vim'
 Bundle 'kien/ctrlp.vim'
-Bundle 'gcmt/wildfire.vim'
 Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-fugitive'
-Bundle 'airblade/vim-gitgutter'
 Bundle 'godlygeek/tabular'
 Bundle 'scrooloose/nerdtree'
 Bundle 'tpope/vim-commentary'
-Bundle 'tejr/vim-tmux'
 Bundle 'ervandew/supertab'
 Bundle 'plasticboy/vim-markdown'
 Bundle 'Valloric/YouCompleteMe'
@@ -54,6 +49,8 @@ set hlsearch
 set ignorecase
 set smartcase
 
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
+
 syntax enable
 set background=dark
 colorscheme solarized
@@ -62,6 +59,7 @@ colorscheme solarized
 autocmd BufWritePre *.go :%s/\s\+$//e
 autocmd BufWritePre *.html :%s/\s\+$//e
 autocmd BufWritePre *.scss :%s/\s\+$//e
+
 
 au BufNewFile * set noeol
 au BufRead,BufNewFile *.go set filetype=go
@@ -79,11 +77,6 @@ nmap <F8> :TagbarToggle<CR>
 " No show command
 autocmd VimEnter * set nosc
 
-" Jump to the next row on long lines
-map <Down> gj
-map <Up>   gk
-nnoremap j gj
-nnoremap k gk
 
 " format the entire file
 nmap <leader>fef ggVG=
@@ -117,11 +110,14 @@ let NERDTreeIgnore = ['tmp', '.yardoc', 'pkg']
 let g:syntastic_mode_map = { 'mode': 'passive' }
 
 " CtrlP
-nnoremap <silent> t :CtrlP<cr>
-let g:ctrlp_working_path_mode = 2
-let g:ctrlp_by_filename = 1
-let g:ctrlp_max_files = 600
-let g:ctrlp_max_depth = 5
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_custom_ignore='\v[\/]\.(git|hg|svn)$'
+let g:ctrlp_user_command = 'find %s -type f'        " MacOSX/Linux
+
+let g:airline#extensions#tabline#enabled = 1
+
 
 " Go programming Settings
 let g:go_fmt_fail_silently=1
