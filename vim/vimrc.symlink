@@ -1,263 +1,134 @@
 " Vim
-" ===
-
-" Source ~/.vimrc.before if it exists
-if filereadable(expand('~/.vimrc.before'))
-  source ~/.vimrc.before
-endif
-
+execute pathogen#infect()
 
 set nocompatible               " be iMproved
 filetype off                   " required!
 
-set rtp+=~/.vim/bundle/Vundle.vim/
-call vundle#begin()
+set rtp+=~/.vim/bundle/vundle
+call vundle#rc()
 
-Plugin 'gmarik/Vundle.vim'
-Plugin 'L9'
-Plugin 'chriskempson/base16-vim'
-Plugin 'kien/ctrlp.vim'
-Plugin 'gcmt/wildfire.vim'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-fugitive'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'godlygeek/tabular'
-Plugin 'scrooloose/nerdtree'
-Plugin 'tpope/vim-commentary'
-Plugin 'tejr/vim-tmux'
-Plugin 'ervandew/supertab'
-Plugin 'plasticboy/vim-markdown'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'fatih/vim-go'
-Plugin 'Shougo/neosnippet'
-Plugin 'Shougo/neosnippet-snippets'
-Plugin 'bling/vim-airline'
-Plugin 'majutsushi/tagbar'
+Bundle 'gmarik/vundle'
+Bundle 'L9'
+Bundle 'chriskempson/base16-vim'
+Bundle 'kien/ctrlp.vim'
+Bundle 'gcmt/wildfire.vim'
+Bundle 'tpope/vim-surround'
+Bundle 'tpope/vim-fugitive'
+Bundle 'airblade/vim-gitgutter'
+Bundle 'godlygeek/tabular'
+Bundle 'scrooloose/nerdtree'
+Bundle 'tpope/vim-commentary'
+Bundle 'tejr/vim-tmux'
+Bundle 'ervandew/supertab'
+Bundle 'plasticboy/vim-markdown'
+Bundle 'Valloric/YouCompleteMe'
+Bundle 'fatih/vim-go'
+Bundle 'Shougo/neosnippet'
+Bundle 'Shougo/neosnippet-snippets'
+Bundle 'bling/vim-airline'
+Bundle 'majutsushi/tagbar'
 
-call vundle#end()
 filetype plugin indent on
-
-" Per-directory .vimrc files
-set exrc
-set secure
-
-" Syntax
-" ======
-
-syntax on
-syntax enable
-set t_Co=256
 
 " General Config
 " ==============
 
-let mapleader='\'
+let mapleader=','
+set cursorline
+set expandtab
+set modelines=0
+set shiftwidth=2
+set clipboard=unnamed
+set synmaxcol=128
+set ttyscroll=10
 set guifont=Monaco:h14
 set encoding=utf-8
-set number                      " Line numbers are good
-set backspace=indent,eol,start  " Allow backspace in insert mode
-set history=1000                " Store lots of :cmdline history
-set showcmd                     " Show incomplete cmds down the bottom
-set showmode                    " Show current mode down the bottom
-set gcr=a:blinkon0              " Disable cursor blink
-set autoread                    " Reload files changed outside vim
-set laststatus=2                " Always show status line
-set clipboard=unnamed           " Use system clipboard
-set hidden                      " Buffers can exist in the background
-set splitright                  " Opens vertical split right of current window
-set splitbelow                  " Opens horizontal split below current window
-"set shortmess=filnxtToOI       " see :help shortmess
-                                " http://items.sjbach.com/319/configuring-vim-right
-
-
-" Mouse
-" ======
-
-" Send more characters for redraws
-set ttyfast
-
-" Enable mouse use in all modes
-set mouse=a
-
-" Set this to the name of your terminal that supports mouse codes.
-" Must be one of: xterm, xterm2, netterm, dec, jsbterm, pterm
-set ttymouse=xterm2
-
-
-" Search Settings
-" ===============
-
-set incsearch        " Find the next match as we type the search
-set hlsearch         " Hilight searches by default
-set viminfo='100,f1  " Save up to 100 marks, enable capital marks
-
-" Turn Off Swap Files
-" ===================
-
+set tabstop=2
+set nowrap
+set number
+set expandtab
+set nowritebackup
 set noswapfile
 set nobackup
-set nowritebackup
-set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
-set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set hlsearch
+set ignorecase
+set smartcase
 
-" Persistent Undo
-" ===============
+syntax enable
+set background=dark
+colorscheme solarized
 
-" Keep undo history across sessions, by storing in file
-" Only works in MacVim (gui) mode
-if has('gui_running')
-  set undodir=~/.vim/backups
-  set undofile
-  " Hide the toolbar
-  set guioptions-=T
+" Automatic formatting
+autocmd BufWritePre *.go :%s/\s\+$//e
+autocmd BufWritePre *.html :%s/\s\+$//e
+autocmd BufWritePre *.scss :%s/\s\+$//e
+
+au BufNewFile * set noeol
+au BufRead,BufNewFile *.go set filetype=go
+
+" Mappings
+au FileType go nmap <Leader>i <Plug>(go-info)
+au FileType go nmap <Leader>gb <Plug>(go-doc-browser)
+au FileType go nmap <leader>r <Plug>(go-run)
+au FileType go nmap <leader>b <Plug>(go-build)
+au FileType go nmap <leader>t <Plug>(go-test)
+au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
+
+nmap <F8> :TagbarToggle<CR>
+
+" No show command
+autocmd VimEnter * set nosc
+
+" Jump to the next row on long lines
+map <Down> gj
+map <Up>   gk
+nnoremap j gj
+nnoremap k gk
+
+" format the entire file
+nmap <leader>fef ggVG=
+
+" Open new buffers
+nmap <leader>s<left>   :leftabove  vnew<cr>
+nmap <leader>s<right>  :rightbelow vnew<cr>
+nmap <leader>s<up>     :leftabove  new<cr>
+nmap <leader>s<down>   :rightbelow new<cr>
+
+" Tab between buffers
+noremap <tab> <c-w><c-w>
+
+" Switch between last two buffers
+nnoremap <leader><leader> <C-^>
+
+" Resize buffers
+if bufwinnr(1)
+  nmap Ä <C-W><<C-W><
+  nmap Ö <C-W>><C-W>>
+  nmap ö <C-W>-<C-W>-
+  nmap ä <C-W>+<C-W>+
 endif
 
-" Indentation and Display
-" =======================
-
-set autoindent
-set smartindent
-set smarttab
-set shiftwidth=2
-set softtabstop=2
-set tabstop=2
-set expandtab
-
-filetype plugin on
-filetype indent on
-
-set list listchars=tab:\ \ ,trail:·   " Display tabs and trailing spaces visually
-set nowrap                            " Don't wrap lines
-set linebreak                         " Wrap lines at convenient points
-
-" Folds
-" =====
-
-set foldmethod=indent   " Fold based on indent
-set foldnestmax=3       " Deepest fold is 3 levels
-set nofoldenable        " Don't fold by default
-
-" Completion
-" ==========
-
-"set wildmode=list:longest
-set wildmode=longest,list,full
-set wildmenu                    " Enable ctrl-n and ctrl-p to scroll thru matches
-set wildignore=*.o,*.obj,*~     " Stuff to ignore when tab completing
-set wildignore+=*vim/backups*
-
-" Scrolling
-" =========
-
-" Start scrolling when we're getting close to margins
-set scrolloff=10
-set sidescrolloff=15
-set sidescroll=1
-
-" Status Line
-" ===========
-
-set statusline=                                 " Override default
-set statusline+=%{fugitive#statusline()[4:-2]}  " Show fugitive git info
-set statusline+=\ %f\ %m\ %r                    " Show filename/path
-set statusline+=%=                              " Set right-side status info after this line
-set statusline+=%l/%L:%v                        " Set <line number>/<total lines>:<column>
-set statusline+=\                               " Set ending space
-
 " NERDTree
-" ========
-function! ShowFileInNERDTree()
-  if exists("t:NERDTreeBufName")
-    NERDTreeFind
-  else
-    NERDTree
-    wincmd l
-    NERDTreeFind
-  endif
-endfunction
-map <leader>f :call ShowFileInNERDTree()<cr>
+nmap <leader>n :NERDTreeToggle<CR>
+let NERDTreeHighlightCursorline=1
+let NERDTreeIgnore = ['tmp', '.yardoc', 'pkg']
 
-" Plugin overrides
-source ~/.vim/autocmd.vim
-source ~/.vim/format.vim
-source ~/.vim/common.vim
-source ~/.vim/tmux.vim
-source ~/.vim/colors.vim
-source ~/.vim/ctrlp.vim
+" Syntastic
+let g:syntastic_mode_map = { 'mode': 'passive' }
 
-colorscheme base16-solarized
-set background=dark
+" CtrlP
+nnoremap <silent> t :CtrlP<cr>
+let g:ctrlp_working_path_mode = 2
+let g:ctrlp_by_filename = 1
+let g:ctrlp_max_files = 600
+let g:ctrlp_max_depth = 5
 
-" Git Gutter
-" ==========
-let g:gitgutter_sign_column_always = 1
-let g:gitgutter_eager = 0
-
-hi StatusLine ctermfg=5 ctermbg=10 guifg=#6c71c4 guibg=#073642
-
-" Highlight words to avoid in tech writing
-" =======================================
-"
-"   obviously, basically, simply, of course, clearly,
-"   just, everyone knows, However, So, easy
-
-"   http://css-tricks.com/words-avoid-educational-writing/
-
-highlight TechWordsToAvoid ctermbg=red ctermfg=white
-function MatchTechWordsToAvoid()
-	match TechWordsToAvoid /\c\<\(obviously\|basically\|simply\|of\scourse\|clearly\|just\|everyone\sknows\|however\|so,\|easy\)\>/
-endfunction
-autocmd FileType markdown call MatchTechWordsToAvoid()
-autocmd BufWinEnter *.md call MatchTechWordsToAvoid()
-autocmd InsertEnter *.md call MatchTechWordsToAvoid()
-autocmd InsertLeave *.md call MatchTechWordsToAvoid()
-autocmd BufWinLeave *.md call clearmatches()
-
-
-" Trigger configuration. Do not use <tab> if you use
-" https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-"
-" " If you want :UltiSnipsEdit to split your window.
-let g:UltiSnipsEditSplit="vertical"
-
-let g:tagbar_type_go = {
-    \ 'ctagstype' : 'go',
-    \ 'kinds'     : [
-        \ 'p:package',
-        \ 'i:imports:1',
-        \ 'c:constants',
-        \ 'v:variables',
-        \ 't:types',
-        \ 'n:interfaces',
-        \ 'w:fields',
-        \ 'e:embedded',
-        \ 'm:methods',
-        \ 'r:constructor',
-        \ 'f:functions'
-    \ ],
-    \ 'sro' : '.',
-    \ 'kind2scope' : {
-        \ 't' : 'ctype',
-        \ 'n' : 'ntype'
-    \ },
-    \ 'scope2kind' : {
-        \ 'ctype' : 't',
-        \ 'ntype' : 'n'
-    \ },
-    \ 'ctagsbin'  : 'gotags',
-    \ 'ctagsargs' : '-sort -silent'
-    \ }
-
-" === Go settings
-"
-let g:go_play_open_browser = 0
-let g:go_fmt_failt_silently = 1
-let g:go_fmt_autosave = 0
+" Go programming Settings
+let g:go_fmt_fail_silently=1
+let g:go_fmt_autosave=0
 let g:go_fmt_command = "gofmt"
+let g:go_snippet_engine="neosnippet"
+let g:go_bin_path="/Users/agurha/workspace/gocode/bin"
 
-let g:go_gocode_bin="~/workspace/gocode"
-
-let g:go_snippet_engine = "neosnippet"
+" Quit with :Q
+command -nargs=0 Quit :qa!
