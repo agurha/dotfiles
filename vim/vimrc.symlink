@@ -22,6 +22,7 @@ Bundle 'Shougo/neosnippet'
 Bundle 'Shougo/neosnippet-snippets'
 Bundle 'bling/vim-airline'
 Bundle 'majutsushi/tagbar'
+Bundle 'vim-ruby/vim-ruby'
 
 filetype plugin indent on
 
@@ -125,6 +126,35 @@ let g:go_fmt_autosave=0
 let g:go_fmt_command = "gofmt"
 let g:go_snippet_engine="neosnippet"
 let g:go_bin_path="/Users/agurha/workspace/gocode/bin"
+let g:go_disable_autoinstall=1
+
+let g:tagbar_type_go = {
+    \ 'ctagstype' : 'go',
+    \ 'kinds'     : [
+        \ 'p:package',
+        \ 'i:imports:1',
+        \ 'c:constants',
+        \ 'v:variables',
+        \ 't:types',
+        \ 'n:interfaces',
+        \ 'w:fields',
+        \ 'e:embedded',
+        \ 'm:methods',
+        \ 'r:constructor',
+        \ 'f:functions'
+    \ ],
+    \ 'sro' : '.',
+    \ 'kind2scope' : {
+        \ 't' : 'ctype',
+        \ 'n' : 'ntype'
+    \ },
+    \ 'scope2kind' : {
+        \ 'ctype' : 't',
+        \ 'ntype' : 'n'
+    \ },
+    \ 'ctagsbin'  : 'gotags',
+    \ 'ctagsargs' : '-sort -silent'
+    \ }
 
 " Quit with :Q
 command -nargs=0 Quit :qa!
